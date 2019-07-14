@@ -49,16 +49,31 @@ table {
   line-height: 20px;
   color: #252519;
 }
-.home-link {
+.c {
+	width: 420px;
+	min-width: 420px;
+	max-width: 420px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 120px;
+	margin-top: 40px;
+}
+.c .home-link {
   font-size: 3em;
 }
-.home-link a {
+.c .home-link a {
   transition: all .2s ease;
 }
-.home-link a:active, 
-.home-link a:visited {
+.c .home-link a:active, 
+.c .home-link a:visited {
   color: #261a3b;
 }
-.home-link a:hover {
-  color: blue;
+.c .home-link a:hover {
+  color: rgb(67, 27, 113);
+}
+.c p {
+	padding-top: 20px;
+}
+.c h4 {
+	color: rgb(116, 115, 115);
 }

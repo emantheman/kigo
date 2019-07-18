@@ -15,6 +15,10 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// Global vars
+var db *gorm.DB
+var err error
+
 // Page is a representation of a wiki page.
 type Page struct {
 	Title string
@@ -115,24 +119,26 @@ func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.Handl
 	}
 }
 
-// Retrieves and formats environment variables for connection to MYSQL database.
+// Formats arguments for connection to MYSQL database.
 func getConnectionArgs() string {
 	// Loads environment vars
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env variables.")
 	}
+
 	// Environment variables
 	dbPw := os.Getenv("DB_PASSWORD")
 	dbUsr := os.Getenv("DB_USER")
 	dbName := os.Getenv("DB_NAME")
+
 	// Formats connection arguments
 	return fmt.Sprintf("%s:%s@/%s?charset=utf8&parseTime=True&loc=Local", dbUsr, dbPw, dbName)
 }
 
 func main() {
 	// Opens connection to mysql database
-	db, err := gorm.Open("mysql", getConnectionArgs())
+	db, err = gorm.Open("mysql", getConnectionArgs())
 	defer db.Close()
 	if err != nil {
 		log.Fatal("Connection failed to open.")

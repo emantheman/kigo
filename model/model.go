@@ -14,13 +14,16 @@ type User struct {
 // Poem is authored by a user.
 type Poem struct {
 	gorm.Model
-	AuthorID User
+	AuthorID int
+	User     User `gorm:"foreignkey:AuthorID"`
 	Content  string
 }
 
 // Favorite is an association between a user and a poem that they like.
 type Favorite struct {
 	ID     int
-	UserID User
-	PoemID Poem
+	UserID int
+	PoemID int
+	User   User
+	Poem   Poem
 }

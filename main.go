@@ -6,7 +6,13 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"regexp"
+
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"github.com/joho/godotenv"
 )
 
 // Page is a representation of a wiki page.
@@ -96,7 +102,7 @@ func saveHandler(w http.ResponseWriter, r *http.Request, title string) {
 // Valid filename
 var validPath = regexp.MustCompile("^/(edit|save|view)/([a-zA-Z0-9]+)$")
 
-// Retrieves and error-checks title, and returns a HandlerFunc
+// Retrieves and error-checks title, and returns a HandlerFunc.
 func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		m := validPath.FindStringSubmatch(r.URL.Path)
@@ -109,7 +115,30 @@ func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.Handl
 	}
 }
 
+// Retrieves and formats environment variables for connection to MYSQL database.
+func getConnectionArgs() string {
+	// Loads environment vars
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env variables.")
+	}
+	// Environment variables
+	dbPw := os.Getenv("DB_PASSWORD")
+	dbUsr := os.Getenv("DB_USER")
+	dbName := os.Getenv("DB_NAME")
+	// Formats connection arguments
+	return fmt.Sprintf("%s:%s@/%s?charset=utf8&parseTime=True&loc=Local", dbUsr, dbPw, dbName)
+}
+
 func main() {
+	// Opens connection to mysql database
+	db, err := gorm.Open("mysql", getConnectionArgs())
+	defer db.Close()
+	if err != nil {
+		log.Fatal("Connection failed to open.")
+	}
+	log.Println("Connection established.")
+
 	// Serves everything in the css and img folder as a file
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
 	http.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir("img"))))
@@ -120,6 +149,6 @@ func main() {
 	http.HandleFunc("/edit/", makeHandler(editHandler))
 	http.HandleFunc("/save/", makeHandler(saveHandler))
 
-	// L&S listens on port :8080
+	// L&S listens on port :8080; nil is placeholder for a middleware
 	log.Fatal(http.ListenAndServe(":8080", nil)) // wrap w/ log.Fatal in case of error
 }

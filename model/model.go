@@ -16,7 +16,9 @@ type Poem struct {
 	gorm.Model
 	AuthorID int
 	User     User `gorm:"foreignkey:AuthorID"`
-	Content  string
+	Line1    string
+	Line2    string
+	Line3    string
 }
 
 // Favorite is an association between a user and a poem that they like.

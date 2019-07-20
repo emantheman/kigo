@@ -1,3 +1,6 @@
-<h1>{{.Title}}</h1>
-<p>[<a href="/edit/{{.Title}}">edit</a>]</p>
-<div>{{printf "%s" .Body}}</div>
+<p>[<a href="/edit/{{.ID}}">edit</a>]</p>
+<div class="poem">
+  <p>{{printf "%s" .Line1}}</p>
+  <p>{{printf "%s" .Line2}}</p>
+  <p>{{printf "%s" .Line3}}</p>
+</div>

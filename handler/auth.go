@@ -2,17 +2,18 @@ package handler
 
 import (
 	"context"
-	"crypto/rand"
-	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
-	"time"
 
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
+
+	"kigo/model"
+	"kigo/session"
 )
 
 // Scopes: OAuth 2.0 scopes provide a way to limit the amount of access that is granted to an access token.
@@ -26,67 +27,68 @@ var googleConfig = &oauth2.Config{
 
 const googleApiUrl = "https://www.googleapis.com/oauth2/v2/userinfo?access_token="
 
+// Asks for google permissions.
 func googleLogin(w http.ResponseWriter, r *http.Request) {
-
-	// Create oauthState cookie
-	oauthState := generateStateOauthCookie(w)
-
-	/*
-		AuthCodeURL receive state that is a token to protect the user from CSRF attacks. You must always provide a non-empty string and
-		validate that it matches the the state query parameter on your redirect callback.
-	*/
-	u := googleConfig.AuthCodeURL(oauthState)
-	http.Redirect(w, r, u, http.StatusTemporaryRedirect)
+	// Starts session
+	sess := session.MegaManager.SessionStart(w, r)
+	// Retrieves session id
+	state := sess.Get("sid")
+	// Pass in state for later validation and redirect to url
+	url := googleConfig.AuthCodeURL(state.(string))
+	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
 }
 
+// Cleans up after google response.
 func googleCallback(w http.ResponseWriter, r *http.Request) {
 	// Read oauthState from Cookie
 	oauthState, _ := r.Cookie("oauthstate")
-
+	// Handles invalid state
 	if r.FormValue("state") != oauthState.Value {
+		// Deletes session
+		session.MegaManager.SessionDestroy(w, r)
+		// Logs error
 		log.Println("invalid oauth google state")
+		// Redirects to homepage
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
-
+	// Retrieves user data (name,email,etc)
 	data, err := getUserDataFromGoogle(r.FormValue("code"))
 	if err != nil {
 		log.Println(err.Error())
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
-
-	// GetOrCreate User in your db.
-	// Redirect or response with a token.
-	// More code .....
-	fmt.Fprintf(w, "UserInfo: %s\n", data)
+	// Creates user in database
+	initOrCreateUser(data)
+	// Redirects to protected endpoint
+	http.Redirect(w, r, "/haiku", http.StatusTemporaryRedirect)
 }
 
-func generateStateOauthCookie(w http.ResponseWriter) string {
-	var expiration = time.Now().Add(20 * time.Minute)
-
-	b := make([]byte, 16)
-	rand.Read(b)
-	state := base64.URLEncoding.EncodeToString(b)
-	cookie := http.Cookie{Name: "oauthstate", Value: state, Expires: expiration}
-	http.SetCookie(w, &cookie)
-
-	return state
+// Initializes or creates a user.
+func initOrCreateUser(data []byte) {
+	var user model.User
+	// Stores req data in user
+	json.Unmarshal(data, &user)
+	// Creates new user or returns existing user (contingent on whether id is in DB)
+	db.FirstOrInit(&user, map[string]interface{}{"ID": user.ID})
 }
 
+// Exchanges code for google user's info.
 func getUserDataFromGoogle(code string) ([]byte, error) {
-	// Use code to get token and get user info from Google.
-
+	// Exchanges code for token
 	token, err := googleConfig.Exchange(context.Background(), code)
 	if err != nil {
 		return nil, fmt.Errorf("code exchange wrong: %s", err.Error())
 	}
-	response, err := http.Get(googleApiUrl + token.AccessToken)
+	// Uses token to request user info
+	res, err := http.Get(googleApiUrl + token.AccessToken)
 	if err != nil {
 		return nil, fmt.Errorf("failed getting user info: %s", err.Error())
 	}
-	defer response.Body.Close()
-	contents, err := ioutil.ReadAll(response.Body)
+	defer res.Body.Close()
+	// Reads the response
+	contents, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return nil, fmt.Errorf("failed read response: %s", err.Error())
 	}

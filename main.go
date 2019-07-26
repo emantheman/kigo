@@ -1,35 +1,28 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
 	"kigo/handler"
-
-	"github.com/joho/godotenv"
-	// "fmt"
-	// "html/template"
-	// . "kigo/model"
-	// "log"
-	// "net/http"
-	// "os"
-	// "regexp"
-	// "strconv"
-	// _ "github.com/go-sql-driver/mysql"
-	// "github.com/jinzhu/gorm"
-	// _ "github.com/jinzhu/gorm/dialects/mysql"
+	"kigo/session"
+	_ "kigo/session/provider/memory" // registers memory provider
 )
 
-func main() {
-	// Load .env vars
-	if err := godotenv.Load(); err != nil {
-		log.Fatal("Error loading .env file")
+func init() {
+	// Initializes a global session manager
+	session.MegaManager, err = session.NewManager("memory", "oauthstate", 3600)
+	if err != nil {
+		log.Printf("Error creating global session-manager.")
 	}
+	// Starts GC cycle
+	go session.MegaManager.GC()
+}
 
+func main() {
 	// Creates a simple http server
 	server := &http.Server{
-		Addr:    fmt.Sprintf(":8080"),
+		Addr:    ":8080",
 		Handler: handler.New(),
 	}
 

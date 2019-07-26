@@ -1,0 +1,9 @@
+{{range .Poems}}
+<ul class="poem">
+    <li>{{printf "%s" .Line1}}</li>
+    <li>{{printf "%s" .Line2}}</li>
+    <li>{{printf "%s" .Line3}}</li>
+</ul>
+{{else}}
+<p>There are no poems yet!</p>
+{{end}}

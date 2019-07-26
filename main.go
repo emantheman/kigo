@@ -9,6 +9,8 @@ import (
 	_ "kigo/session/provider/memory" // registers memory provider
 )
 
+var err error
+
 func init() {
 	// Initializes a global session manager
 	session.MegaManager, err = session.NewManager("memory", "oauthstate", 3600)
@@ -20,12 +22,15 @@ func init() {
 }
 
 func main() {
+	defer handler.DB.Close()
+	////////////
+	// SERVER //
+	////////////
 	// Creates a simple http server
 	server := &http.Server{
 		Addr:    ":8080",
 		Handler: handler.New(),
 	}
-
 	// Runs server
 	log.Printf("Starting HTTP Server. Listening at %q", server.Addr)
 	if err := server.ListenAndServe(); err != http.ErrServerClosed {
@@ -36,7 +41,7 @@ func main() {
 }
 
 // // Global vars
-// var db *gorm.DB
+// var DB *gorm.DB
 // var err error
 
 // // Load templates
@@ -61,7 +66,7 @@ func main() {
 // func loadPoem(id int) (Poem, error) {
 // 	var poem Poem
 // 	// SELECT * FROM poem WHERE id = <id>
-// 	err = db.Model(&Poem{}).Where("id = ?", id).Take(&poem).Error
+// 	err = DB.Model(&Poem{}).Where("id = ?", id).Take(&poem).Error
 // 	return poem, err
 // }
 
@@ -74,7 +79,7 @@ func main() {
 // func countFavs(id int) (int, error) {
 // 	var count int
 // 	// SELECT count(*) FROM poem WHERE id = <id>
-// 	err = db.Model(&Poem{}).Where("id = ?", id).Count(&count).Error
+// 	err = DB.Model(&Poem{}).Where("id = ?", id).Count(&count).Error
 // 	return count, err
 // }
 
@@ -120,7 +125,7 @@ func main() {
 // 		// Creates poem
 // 		poem = Poem{AuthorID: authorID, Line1: r.FormValue("line-1"), Line2: r.FormValue("line-2"), Line3: r.FormValue("line-3")}
 // 		// Saves poem to database
-// 		err = db.Create(&poem).Error
+// 		err = DB.Create(&poem).Error
 // 		if err != nil {
 // 			http.Error(w, "Error on CreatePoem.", http.StatusBadRequest)
 // 			return
@@ -175,32 +180,32 @@ func main() {
 // 		log.Fatal("Error loading .env variables.")
 // 	}
 // 	// Environment variables
-// 	dbPw := os.Getenv("DB_PASSWORD")
-// 	dbUsr := os.Getenv("DB_USER")
-// 	dbName := os.Getenv("DB_NAME")
+// 	DBPw := os.Getenv("DB_PASSWORD")
+// 	DBUsr := os.Getenv("DB_USER")
+// 	DBName := os.Getenv("DB_NAME")
 // 	// Formats connection arguments
-// 	return fmt.Sprintf("%s:%s@/%s?charset=utf8&parseTime=True&loc=Local", dbUsr, dbPw, dbName)
+// 	return fmt.Sprintf("%s:%s@/%s?charset=utf8&parseTime=True&loc=Local", DBUsr, DBPw, DBName)
 // }
 
 // func main() {
 // 	// Opens connection to mysql database
-// 	db, err = gorm.Open("mysql", getConnectionArgs())
-// 	defer db.Close()
+// 	DB, err = gorm.Open("mysql", getConnectionArgs())
+// 	defer DB.Close()
 // 	if err != nil {
 // 		log.Fatal("Connection failed to open.")
 // 	}
 // 	log.Println("Connection established.")
 
 // 	// Makes table names singular
-// 	db.SingularTable(true)
+// 	DB.SingularTable(true)
 
 // 	// Builds Tables
-// 	db.AutoMigrate(new(User), new(Poem), new(Favorite))
+// 	DB.AutoMigrate(new(User), new(Poem), new(Favorite))
 
 // 	// Test create user
 // 	// var u = User{Name: "tboy", Password: "test", Email: "t@tboy", Bio: "I'm a teemster"}
 // 	var haiku = Poem{AuthorID: 1, Line1: "Growing at home", Line2: "A dragon", Line3: "No one sees"}
-// 	db.Create(&haiku)
+// 	DB.Create(&haiku)
 
 // 	// Serves everything in the css and img folder as a file
 // 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))

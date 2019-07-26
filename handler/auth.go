@@ -71,7 +71,7 @@ func initOrCreateUser(data []byte) {
 	// Stores req data in user
 	json.Unmarshal(data, &user)
 	// Creates new user or returns existing user (contingent on whether id is in DB)
-	db.FirstOrInit(&user, map[string]interface{}{"ID": user.ID})
+	DB.FirstOrInit(&user, map[string]interface{}{"ID": user.ID})
 }
 
 // Exchanges code for google user's info.

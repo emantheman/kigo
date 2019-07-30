@@ -53,10 +53,9 @@ body {
 
 /* File tree */
 .file-tree {
-    font-size: 1.3em;
-    position: sticky;
-    top: 10px;
-    padding-left: 10px;
+    font-size: 1.1em;
+	padding-left: 10px;
+	margin-bottom: 80px;
 }
 .file-tree b {
 	font-weight: bold;
@@ -122,25 +121,38 @@ body {
 	font-size: 1.2em;
 }
 .center-column-wide .poem {
+	transition: all .15s;
+	cursor: pointer;
 	position: relative;
+	top: 0;
+	border-radius: 3px;
 	width: 370px;
-	padding-top: 40px;
+	margin-top: 40px;
+    padding-left: 12px;
+    padding-top: 12px;
+    padding-bottom: 12px;
     line-height: 1.4em;
     font-family: monospace;
-    font-size: 1.1em;
+	font-size: 1.1em;
+	box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+	background-color: #1ec4a7;
+	color: white;
+}
+.center-column-wide .poem:hover {
+	top: -2px;
+	box-shadow: 0 4px 5px rgba(0,0,0,0.2);
 }
 
-.center-column-wide .poem:nth-child(even) {
-	color: blue;
-	/* text-align: right; */
-	left: 60%;
+.center-column-wide .poem:nth-child(odd) {
+	background-color: #04b6ef;
+	left: 55%;
 }
 
 .center-column-wide .poem .author {
-	position: absolute;
-    bottom: -33px;
-    right: 10px;
+	display: block;
+    text-align: right;
 	font-size: .95em;
+	padding-right: 15px;
 }
 
 /* max-chars per haiku-line: 27 */

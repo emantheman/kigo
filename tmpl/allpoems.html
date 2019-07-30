@@ -1,9 +1,26 @@
-{{range .Poems}}
-<ul class="poem">
-    <li>{{printf "%s" .Line1}}</li>
-    <li>{{printf "%s" .Line2}}</li>
-    <li>{{printf "%s" .Line3}}</li>
-</ul>
-{{else}}
-<p>There are no poems yet!</p>
-{{end}}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>kigo</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
+<body>
+    <h3 class="file-tree">
+        <a href="/home">*</a>
+        <span class="bold">/</span>
+        <a href="/haiku">haiku</a>
+    </h3>
+    <div class="center-column-wide">
+      {{range .}}
+            <ul class="poem">
+                <li>{{printf "%s" .Line1}}</li>
+                <li>{{printf "%s" .Line2}}</li>
+                <li>{{printf "%s" .Line3}}</li>
+                <span class="author">--u_name</span>
+            </ul>
+        {{else}}
+            <p>There are no poems yet!</p>
+        {{end}}
+    </div>
+</body>
+</html>

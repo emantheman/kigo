@@ -70,11 +70,6 @@ func main() {
 // 	return poem, err
 // }
 
-// // ValidPoem validates whether poem adheres to haiku constraints.
-// func validPoem(lines []string) bool {
-// 	return true
-// }
-
 // // CountFavs counts the number of favorites a poem has.
 // func countFavs(id int) (int, error) {
 // 	var count int

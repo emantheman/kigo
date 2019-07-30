@@ -41,43 +41,106 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-
-/* Home page */
-.body {
-  font-family: 'Georgia', serif;
-  font-size: 16px;
-  line-height: 20px;
-  color: #252519;
+body {
+	font-family: 'Times', serif;
+	font-size: 16px;
+	line-height: 20px;
+	color: #252519;
 }
-.c {
+.bold {
+	font-weight: bold;
+}
+
+/* File tree */
+.file-tree {
+    font-size: 1.3em;
+    position: sticky;
+    top: 10px;
+    padding-left: 10px;
+}
+.file-tree b {
+	font-weight: bold;
+}
+.file-tree a {
+	text-decoration: none;
+	color: rgb(67, 27, 113);
+	transition: .2s;
+}
+.file-tree a:visited,
+.file-tree a:active {
+	color: black
+}
+.file-tree a:hover {
+	color: blue;
+}
+/* Home page */
+.center-column {
 	width: 420px;
-	min-width: 420px;
-	max-width: 420px;
+    min-width: 440px;
+    max-width: 440px;
 	margin-left: auto;
 	margin-right: auto;
 	margin-bottom: 120px;
 	margin-top: 40px;
+	font-size: 1.2em;
 }
-.c .home-link {
+.center-column .home-link {
   font-size: 3em;
 }
-.c .home-link a {
+.center-column .home-link a {
   transition: all .2s ease;
 }
-.c .home-link a:active, 
-.c .home-link a:visited {
+.center-column .home-link a:active, 
+.center-column .home-link a:visited {
   color: #261a3b;
 }
-.c .home-link a:hover {
+.center-column .home-link a:hover {
   color: rgb(67, 27, 113);
 }
-.c p {
+.center-column p {
 	padding-top: 20px;
+	font-family: monospace;
 }
-.c h4 {
+.center-column h4 {
 	color: rgb(116, 115, 115);
 }
 
-.c b {
+.center-column b {
 	font-weight: bold;
 }
+
+/* allpoems */
+.center-column-wide {
+	position: relative;
+    width: 780px;
+    min-width: 800px;
+    max-width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 120px;
+	margin-top: 40px;
+	font-size: 1.2em;
+}
+.center-column-wide .poem {
+	position: relative;
+	width: 370px;
+	padding-top: 40px;
+    line-height: 1.4em;
+    font-family: monospace;
+    font-size: 1.1em;
+}
+
+.center-column-wide .poem:nth-child(even) {
+	color: blue;
+	/* text-align: right; */
+	left: 60%;
+}
+
+.center-column-wide .poem .author {
+	position: absolute;
+    bottom: -33px;
+    right: 10px;
+	font-size: .95em;
+}
+
+/* max-chars per haiku-line: 27 */

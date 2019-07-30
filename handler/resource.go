@@ -34,7 +34,7 @@ func renderTemplate(w http.ResponseWriter, tmpl string, data interface{}) {
 func getAllPoems(w http.ResponseWriter, r *http.Request) {
 	var poems = []model.Poem{} // slice of poems
 	// Retrieves * poems from DB
-	DB.Find(&poems)
+	DB.Order("created_at DESC").Find(&poems)
 	// Creates data object for rendering
 	// data := Data{Poems: poems}
 	// Renders poems to client

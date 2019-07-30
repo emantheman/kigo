@@ -111,23 +111,24 @@ body {
 /* allpoems */
 .center-column-wide {
 	position: relative;
-    width: 780px;
-    min-width: 800px;
-    max-width: 800px;
+	width: 770px;
+    min-width: 790px;
+    max-width: 790px;
 	margin-left: auto;
 	margin-right: auto;
 	margin-bottom: 120px;
 	margin-top: 40px;
 	font-size: 1.2em;
 }
-.center-column-wide .poem {
-	transition: all .15s;
+.center-column-wide .poem-link {
+	display: block;
+	transition: all .15s, left .8s, margin-left 1s, margin-right 1s, margin-top .8s;
 	cursor: pointer;
 	position: relative;
 	top: 0;
 	border-radius: 3px;
 	width: 370px;
-	margin-top: 40px;
+	margin-top: 30px;
     padding-left: 12px;
     padding-top: 12px;
     padding-bottom: 12px;
@@ -137,22 +138,50 @@ body {
 	box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 	background-color: #1ec4a7;
 	color: white;
+	text-decoration: none;
 }
-.center-column-wide .poem:hover {
-	top: -2px;
+.center-column-wide .poem-link:hover {
 	box-shadow: 0 4px 5px rgba(0,0,0,0.2);
+	top: -2px;
 }
-
-.center-column-wide .poem:nth-child(odd) {
+.center-column-wide .poem-link:nth-child(odd) {
 	background-color: #04b6ef;
-	left: 55%;
+	left: 52%;
 }
 
-.center-column-wide .poem .author {
+.center-column-wide .poem-link .author {
 	display: block;
     text-align: right;
 	font-size: .95em;
 	padding-right: 15px;
+}
+
+.center-column-wide .poem-link .timestamp {
+	position: absolute;
+	transition: bottom .15s;
+    left: 11px;
+    bottom: -27px;
+    font-size: .75em;
+    color: black;
+}
+.center-column-wide .poem-link:hover .timestamp {
+	bottom: -29px;
+}
+
+@media (max-width: 810px) {
+	.center-column-wide {
+		width: 480px;
+		min-width: 500px;
+		max-width: 500px;
+	}
+	.center-column-wide .poem-link {
+		margin-top: 60px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.center-column-wide .poem-link:nth-child(odd) {
+		left: 0;
+	}
 }
 
 /* max-chars per haiku-line: 27 */

@@ -47,31 +47,13 @@ body {
 	line-height: 20px;
 	color: #252519;
 }
-.bold {
+b, strong {
 	font-weight: bold;
+}
+i {
+	font-style: italic;
 }
 
-/* File tree */
-.file-tree {
-    font-size: 1.1em;
-	padding-left: 10px;
-	margin-bottom: 80px;
-}
-.file-tree b {
-	font-weight: bold;
-}
-.file-tree a {
-	text-decoration: none;
-	color: rgb(67, 27, 113);
-	transition: .2s;
-}
-.file-tree a:visited,
-.file-tree a:active {
-	color: black
-}
-.file-tree a:hover {
-	color: blue;
-}
 /* Home page */
 .center-column {
 	width: 420px;
@@ -144,7 +126,7 @@ body {
 	box-shadow: 0 4px 5px rgba(0,0,0,0.2);
 	top: -2px;
 }
-.center-column-wide .poem-link:nth-child(odd) {
+.center-column-wide .poem-link:nth-child(even) {
 	background-color: #04b6ef;
 	left: 52%;
 }
@@ -168,7 +150,67 @@ body {
 	bottom: -29px;
 }
 
-@media (max-width: 810px) {
+/* nav bar */
+#nav {
+	text-align:center;
+	position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: 20px 0;
+	background-color: white;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.2);	
+}
+#nav li {
+	display:inline;
+}
+#nav li a {
+	text-decoration: none;
+    padding: 0 40px;
+    font-size: 1.3em;
+	color: #000000d6;
+	transition: color .25s;
+}
+#nav li a:not(.selected):hover {
+	color: rgb(53, 209, 157);
+}
+#nav #search {
+	position: absolute;
+    font-size: 1em;
+    right: 4%;
+}
+
+/* evenly spaces direct children */
+.evenly-space {
+	display: -webkit-flex;
+	display: flex;
+	flex-wrap: wrap;
+	-webkit-justify-content: space-around;
+	justify-content: space-around;
+	align-content: space-around;
+	padding-top: 80px;
+}
+#about, #definitions {
+	padding: 30px;
+	width: 440px;
+    font-family: monospace;
+	border-radius: 4px;
+}
+#about h1, #definitions h1 {
+	display: block;
+    font-weight: bold;
+	font-size: 1.5em;
+	margin-bottom: 6px;
+	border-radius: 4px;
+}
+#about {
+	border: 1px solid black;
+}
+#definitions {
+	color: white;
+	background-color: #000;
+}
+
+@media (max-width: 960px) {
 	.center-column-wide {
 		width: 480px;
 		min-width: 500px;
@@ -179,9 +221,12 @@ body {
 		margin-left: auto;
 		margin-right: auto;
 	}
-	.center-column-wide .poem-link:nth-child(odd) {
+	.center-column-wide .poem-link:nth-child(even) {
 		left: 0;
+	}
+	.evenly-space {
+		padding-top: 0;
 	}
 }
 
-/* max-chars per haiku-line: 27 */
+/* max-chars per haiku-line: 28 */

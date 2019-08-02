@@ -5,12 +5,13 @@
     <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
+    <ul id="nav">
+        <li><a href="/home">home</a></li>
+        <li><a href="/haiku" title="read haiku">read</a></li>
+        <li><a href="/write" title="write haiku">write</a></li>
+        <input id="search" type="text" placeholder="Search..">
+    </ul>
     <div class="center-column-wide">
-        <h3 class="file-tree">
-            <a href="/home">*</a>
-            <span class="bold">/</span>
-            <a href="/haiku">haiku</a>
-        </h3>
         {{range .}}
             <a class="poem-link" href="/haiku">
                 <ul class="poem">

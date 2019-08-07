@@ -15,11 +15,11 @@
         {{range .}}
             <a class="poem-link" href="/haiku">
                 <ul class="poem">
-                    <li>{{printf "%s" .Line1}}</li>
-                    <li>{{printf "%s" .Line2}}</li>
-                    <li>{{printf "%s" .Line3}}</li>
-                    <span class="timestamp">aug 1, 9:46pm</span>
-                    <span class="author">--u_name</span>
+                    <li>{{.Line1}}</li>
+                    <li>{{.Line2}}</li>
+                    <li>{{.Line3}}</li>
+                    <span class="timestamp">{{.FormatTime}}</span>
+                    <span class="author">--{{.Author}}</span>
                 </ul>
             </a>
         {{else}}

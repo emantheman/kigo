@@ -54,9 +54,10 @@ func New() *http.ServeMux {
 	// Builds Tables
 	DB.AutoMigrate(new(model.User), new(model.Poem), new(model.Favorite))
 	// DUMMY DATA
-	// var poem = model.Poem{AuthorID: 1, Line1: "The dog licks my feet", Line2: "It ignores my loud commands", Line3: "With the happiest smile"}
-	// var poem2 = model.Poem{AuthorID: 1, Line1: "In the blue-green pond", Line2: "Two girls swim nude", Line3: "Their skin is white!"}
-	// DB.Create(&poem).Create(&poem2)
+	// var user = model.User{Name: "nats", Email: "nats@sos.jp", Password: "1234"}
+	// var poem = model.Poem{Author: "kobayashi_issa", Line1: "Don’t weep, insects—", Line2: "Lovers, stars themselves,", Line3: "Must part."}
+	// var poem2 = model.Poem{Author: "nats", Line1: "The crow has flown away:", Line2: "Swaying in the evening sun,", Line3: "A leafless tree."}
+	// DB.Create(&user).Create(&poem).Create(&poem2)
 
 	//////////////
 	// HANDLERS //
@@ -74,6 +75,7 @@ func New() *http.ServeMux {
 	mux.HandleFunc("/auth/google/callback", googleCallback)
 	// -resources
 	mux.HandleFunc("/haiku", getAllPoems)
+	mux.HandleFunc("/haiku/:id", makeDynamicHandlerFunc(getOnePoem))
 	// -protected* resources-
 
 	return mux

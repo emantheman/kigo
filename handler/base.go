@@ -8,6 +8,7 @@ import (
 	"os"
 
 	_ "github.com/go-sql-driver/mysql" // sets up mysql
+	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql" // sets up mysql
 	"github.com/joho/godotenv"
@@ -33,7 +34,7 @@ func getConnectionArgs() string {
 }
 
 // New registers and returns a mux.
-func New() *http.ServeMux {
+func New() *mux.Router {
 	//////////
 	// .ENV //
 	//////////
@@ -53,30 +54,33 @@ func New() *http.ServeMux {
 	log.Println("Connection established.")
 	// Builds Tables
 	DB.AutoMigrate(new(model.User), new(model.Poem), new(model.Favorite))
-	// DUMMY DATA
-	// var user = model.User{Name: "nats", Email: "nats@sos.jp", Password: "1234"}
-	// var poem = model.Poem{Author: "kobayashi_issa", Line1: "Don’t weep, insects—", Line2: "Lovers, stars themselves,", Line3: "Must part."}
-	// var poem2 = model.Poem{Author: "nats", Line1: "The crow has flown away:", Line2: "Swaying in the evening sun,", Line3: "A leafless tree."}
-	// DB.Create(&user).Create(&poem).Create(&poem2)
 
 	//////////////
 	// HANDLERS //
 	//////////////
 	// A mux intelligently matches the URL of incoming reqs against registered patterns
-	mux := http.NewServeMux()
-	// -css/img-
-	mux.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
-	mux.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir("img"))))
+	r := mux.NewRouter().StrictSlash(true)
+	// -assets-
+	r.PathPrefix("/css/").Handler(cssHandler)
+	r.PathPrefix("/img/").Handler(imgHandler)
 	// -root-
-	mux.Handle("/", http.FileServer(http.Dir("template/")))
-	mux.HandleFunc("/home", homeHandler)
-	// -google oauth2-
-	mux.HandleFunc("/auth/google/login", googleLogin)
-	mux.HandleFunc("/auth/google/callback", googleCallback)
-	// -resources
-	mux.HandleFunc("/haiku", getAllPoems)
-	mux.HandleFunc("/haiku/:id", makeDynamicHandlerFunc(getOnePoem))
+	r.HandleFunc("/", homeHandler)
+	// -resources-
+	r.HandleFunc("/haiku", getAllPoems)
+	r.HandleFunc("/haiku/{id:[0-9]+}", getOnePoem)
 	// -protected* resources-
 
-	return mux
+	return r
 }
+
+// GOOGLE AUTH
+// r.Handle("/", http.FileServer(http.Dir("template/")))
+// // -google oauth2-
+// r.HandleFunc("/auth/google/login", googleLogin)
+// r.HandleFunc("/auth/google/callback", googleCallback)
+
+// DUMMY DATA
+// var user = model.User{Name: "nats", Email: "nats@sos.jp", Password: "1234"}
+// var poem = model.Poem{Author: "kobayashi_issa", Line1: "Don’t weep, insects—", Line2: "Lovers, stars themselves,", Line3: "Must part."}
+// var poem2 = model.Poem{Author: "nats", Line1: "The crow has flown away:", Line2: "Swaying in the evening sun,", Line3: "A leafless tree."}
+// DB.Create(&user).Create(&poem).Create(&poem2)

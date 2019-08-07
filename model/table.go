@@ -26,24 +26,25 @@ type Poem struct {
 	Line3  string
 }
 
-// FormatTime formats poem's creation-date.
+// FormatTime formats the poem's timestamp.
 func (p *Poem) FormatTime() string {
 	var (
-		monthDay  string
-		now       = time.Now()
-		yesterday = now.AddDate(0, 0, -1)
-		timestamp = p.CreatedAt
+		monthDay   string
+		hourMinute = p.CreatedAt.Format("3:04PM")
+		today      = time.Now()
+		yesterday  = today.AddDate(0, 0, -1)
+		timestamp  = p.CreatedAt
 	)
-	// Modifies monthday if it is from yesterday or today
-	if timestamp.Year() == now.Year() && timestamp.Month() == now.Month() && timestamp.Day() == now.Day() {
+	// Modifies monthDay if it is from today or yesterday
+	if timestamp.Year() == today.Year() && timestamp.Month() == today.Month() && timestamp.Day() == today.Day() {
 		monthDay = "Today"
 	} else if timestamp.Year() == yesterday.Year() && timestamp.Month() == yesterday.Month() && timestamp.Day() == yesterday.Day() {
 		monthDay = "Yesterday"
 	} else {
 		monthDay = p.CreatedAt.Format("Jan 2")
 	}
-	// Combines monthDay & time
-	return monthDay + ", " + p.CreatedAt.Format("3:04PM")
+	// Combines monthDay & hourMinute
+	return monthDay + ", " + hourMinute
 }
 
 // Favorite is an association between a user and a poem that they like.

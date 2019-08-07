@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"time"
 
 	"kigo/handler"
 	"kigo/session"
@@ -22,14 +23,18 @@ func init() {
 }
 
 func main() {
+	// Closes database
 	defer handler.DB.Close()
+
 	////////////
 	// SERVER //
 	////////////
 	// Creates a simple http server
 	server := &http.Server{
-		Addr:    ":8080",
-		Handler: handler.New(),
+		Addr:         ":8080",
+		Handler:      handler.New(),
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
 	}
 	// Runs server
 	log.Printf("Starting HTTP Server. Listening at %q", server.Addr)

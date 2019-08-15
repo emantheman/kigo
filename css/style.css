@@ -53,44 +53,73 @@ b, strong {
 i {
 	font-style: italic;
 }
+html, body {
+	height: 100%;
+}
 
 /* Home page */
-.center-column {
-	width: 420px;
-    min-width: 440px;
-    max-width: 440px;
-	margin-left: auto;
-	margin-right: auto;
-	margin-bottom: 120px;
-	margin-top: 40px;
-	font-size: 1.2em;
+/* evenly spaces direct children */
+.evenly-space {
+	display: -webkit-flex;
+	display: flex;
+	flex-wrap: wrap;
+	-webkit-justify-content: space-around;
+	justify-content: space-around;
+	align-content: space-around;
+	padding-top: 80px;
 }
-.center-column .home-link {
-  font-size: 3em;
+#about, #definitions {
+	padding: 30px;
+	width: 440px;
+    font-family: monospace;
+	border-radius: 4px;
 }
-.center-column .home-link a {
-  transition: all .2s ease;
+#about h1, #definitions h1 {
+	display: block;
+    font-weight: bold;
+	font-size: 1.5em;
+	margin-bottom: 6px;
+	border-radius: 4px;
 }
-.center-column .home-link a:active, 
-.center-column .home-link a:visited {
-  color: #261a3b;
+#about {
+	border: 1px solid black;
 }
-.center-column .home-link a:hover {
-  color: rgb(67, 27, 113);
-}
-.center-column p {
-	padding-top: 20px;
-	font-family: monospace;
-}
-.center-column h4 {
-	color: rgb(116, 115, 115);
-}
-
-.center-column b {
-	font-weight: bold;
+#definitions {
+	color: white;
+	background-color: #000;
 }
 
-/* allpoems */
+
+/* nav bar */
+#nav {
+	text-align:center;
+	position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: 20px 0;
+	background-color: white;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.2);	
+}
+#nav li {
+	display:inline;
+}
+#nav li a {
+	text-decoration: none;
+    padding: 0 40px;
+    font-size: 1.3em;
+	color: #000000d6;
+	transition: color .25s;
+}
+#nav li a:not(.selected):hover {
+	color: rgb(53, 209, 157);
+}
+#nav #search {
+	position: absolute;
+    font-size: 1em;
+    right: 4%;
+}
+
+/* poemIndex */
 .center-column-wide {
 	position: relative;
 	width: 770px;
@@ -150,66 +179,43 @@ i {
 	bottom: -29px;
 }
 
-/* nav bar */
-#nav {
-	text-align:center;
-	position: sticky;
-    top: 0;
-    z-index: 1;
-    padding: 20px 0;
+/* poemShow */
+#single-poem-view {
+	position: absolute;
+    top: 50%;
+    left: 50%;
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    font-family: monospace;
+    line-height: 1.4em;
+    font-size: 1.6em;
+	box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+	border: 1px solid lightgrey;
+	padding: 40px;
 	background-color: white;
-	box-shadow: 0 1px 3px rgba(0,0,0,0.2);	
 }
-#nav li {
-	display:inline;
+#single-poem-view .poem .author,
+#single-poem-view .poem .timestamp {
+	position: absolute;
+	color: white;
+	font-size: .7em;
+	bottom: -35px;
+	text-shadow: 0px 0px 3px #4f4f4f;
 }
-#nav li a {
+#single-poem-view .poem .author {
+    right: 10px;
 	text-decoration: none;
-    padding: 0 40px;
-    font-size: 1.3em;
-	color: #000000d6;
 	transition: color .25s;
 }
-#nav li a:not(.selected):hover {
-	color: rgb(53, 209, 157);
+#single-poem-view .poem .author:hover {
+	color: black;
 }
-#nav #search {
-	position: absolute;
-    font-size: 1em;
-    right: 4%;
+#single-poem-view .poem .timestamp {
+    left: 10px;
 }
 
-/* evenly spaces direct children */
-.evenly-space {
-	display: -webkit-flex;
-	display: flex;
-	flex-wrap: wrap;
-	-webkit-justify-content: space-around;
-	justify-content: space-around;
-	align-content: space-around;
-	padding-top: 80px;
-}
-#about, #definitions {
-	padding: 30px;
-	width: 440px;
-    font-family: monospace;
-	border-radius: 4px;
-}
-#about h1, #definitions h1 {
-	display: block;
-    font-weight: bold;
-	font-size: 1.5em;
-	margin-bottom: 6px;
-	border-radius: 4px;
-}
-#about {
-	border: 1px solid black;
-}
-#definitions {
-	color: white;
-	background-color: #000;
-}
-
+/* breakpoints */
 @media (max-width: 960px) {
 	.center-column-wide {
 		width: 480px;
@@ -230,3 +236,4 @@ i {
 }
 
 /* max-chars per haiku-line: 28 */
+/* fade from #0000FF to #04b6ef */

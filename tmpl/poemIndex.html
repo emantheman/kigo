@@ -6,10 +6,10 @@
 </head>
 <body>
     <ul id="nav">
-        <li><a href="/" title="home">home</a></li>
-        <li><a href="/haiku" title="read haiku">read</a></li>
-        <li><a href="/write" title="write haiku">write</a></li>
-        <input id="search" type="text" placeholder="Search..">
+        <li><a href="/" title="home!">home</a></li>
+        <li><a href="/haiku" title="read haiku!">read</a></li>
+        <li><a href="/write" title="write haiku!">write</a></li>
+        <li><a href="/search" title="search!">search</a></li>
     </ul>
     <div class="center-column-wide">
         {{range .}}
@@ -18,7 +18,7 @@
                     <li>{{.Line1}}</li>
                     <li>{{.Line2}}</li>
                     <li>{{.Line3}}</li>
-                    <span class="timestamp">{{.CreatedAt | formatTime}}</span>
+                    <span class="timestamp">{{.CreatedAt | formattime}}</span>
                     <span class="author">--{{.Author}}</span>
                 </ul>
             </a>

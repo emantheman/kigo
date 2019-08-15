@@ -4,20 +4,21 @@
     <title>kigo</title>
     <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
-<body>
+{{$bgc := randbgc}}
+<body style="background-color: {{$bgc | attr}}">
     <ul id="nav">
-        <li><a href="/" title="home">home</a></li>
-        <li><a href="/haiku" title="read haiku">read</a></li>
-        <li><a href="/write" title="write haiku">write</a></li>
-        <input id="search" type="text" placeholder="Search..">
+        <li><a href="/" title="home!">home</a></li>
+        <li><a href="/haiku" title="read haiku!">read</a></li>
+        <li><a href="/write" title="write haiku!">write</a></li>
+        <li><a href="/search" title="search!">search</a></li>
     </ul>
-    <div class="single-poem-view">
+    <div id="single-poem-view">
         <ul class="poem">
             <li>{{.Line1}}</li>
             <li>{{.Line2}}</li>
             <li>{{.Line3}}</li>
-            <span class="timestamp">{{.CreatedAt | formatTime}}</span>
-            <span class="author">--{{.Author}}</span>
+            <span class="timestamp">{{.CreatedAt | formattime}}</span>
+            <a class="author" href="/author/{{.Author}}">{{.Author}}</a>
         </ul>
     </div>
 </body>

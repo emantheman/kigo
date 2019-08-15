@@ -17,9 +17,12 @@ type Data struct {
 }
 
 var (
-	// Functions for use w/in templates
+	// Functions for use within templates
 	funcmap = template.FuncMap{
-		"formatTime": formatTime,
+		"safe":       safe,
+		"attr":       attr,
+		"formattime": formatTime,
+		"randbgc":    backgroundColor,
 	}
 	// Templates from tmpl/ directory
 	templates = template.Must(template.New("tmp").Funcs(funcmap).ParseGlob("tmpl/*"))
